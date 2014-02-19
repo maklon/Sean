@@ -1,0 +1,30 @@
+@charset "utf-8";
+body {
+	padding-top:70px;//导航条使用fixed-top,需要在Body上空出70px
+}
+.MainContainer {
+	clear:both;
+	padding:10px;
+}
+.AlbumContainer {
+	clear:both;
+	padding:10px 20px;
+	height:auto;
+	overflow:hidden;
+}
+.AlbumBoard {
+	background-image:url(../Images/PhotoBoard.png);
+	background-repeat:no-repeat;
+	float:left;
+	width:320px;
+	height:300px;
+	margin:10px;
+}
+.AlbumBoard img {
+	margin-top:36px;
+	margin-left:16px;
+}
+.AlbumTitle {
+	margin-top:40px;
+	padding:0px 10px;
+}
