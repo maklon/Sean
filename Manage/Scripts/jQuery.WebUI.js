@@ -1,21 +1,28 @@
 (function($){
-	$.SetProgressValue=function(val,who){
-		if (typeof who==undefined){
-			$("#ProgressValue").css("width",val+"%");
-		}else{
-			$("#"+who).css("width",val+"%");
-		}
+	$.fn.SetProgressValue=function(val){
+		$(this).css("width",val+"%");	
 	};
 	$.ShowDialog=function(text,dialog){
 		if (typeof dialog==undefined){
-			$("#DialogInterfact_Info").text(text);
-			$("#DialogInterfact_Info").dialog("open");
+			$("#Dialog_Info").text(text);
+			$("#Dialog_Info").dialog("open");
 		}else{
 			$("#"+dialog).text(text);
 			$("#"+dialog).dialog("open");
 		}
 	};
+	$.fn.ShowDialog=function(text){
+		$(this).text(text);
+		$(this).dialog("open");	
+	}
 	$.fn.AddOption=function(name,val){
 		$(this).append("<option value=\""+val+"\">"+name+"</option>");	
+	}
+	$.fn.CheckIsEmpty=function(group){
+		if ($(this).val()==""){
+			$("#"+group).attr("class","form-group has-error");	
+		}else{
+			$("#"+group).attr("class","form-group has-success");	
+		}
 	}
 })(jQuery);
