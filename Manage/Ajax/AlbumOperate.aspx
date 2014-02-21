@@ -28,7 +28,7 @@
 
         if (Action == "GET") {
             SQL = "SELECT * FROM Sean_AlbumList WHERE Id=" + Id
-                + ";SELECT Id,FileName FROM Sean_PhotoList WHERE AlbumId=" + Id;
+                + ";SELECT Id,PhotoName FROM Sean_PhotoList WHERE AlbumId=" + Id;
             Sr = MZ.GetReader(SQL);
             if (Sr.Read()) {
                 aInfo.Id = Sr.GetInt32(0);
@@ -67,7 +67,9 @@
             SQL = "";
             if (Action == "ADDNEW") {
                 SQL = "INSERT INTO Sean_AlbumList (AlbumName) VALUES('" + AlbumName + "')";
-                
+                JsonResult = JsonConvert.SerializeObject(aInfo, Formatting.Indented);
+                Response.Write(JsonResult);
+                Response.End();
             } else if (Action == "UPDATE") {
                 SQL = "UPDATE Sean_AlbumList SET AlbumName='" + AlbumName + "',AlbumCoverId=" + AlbumCoverId
                     + ",Status=" + Status + ",OrderId=" + OrderId + " WHERE Id=" + Id;
