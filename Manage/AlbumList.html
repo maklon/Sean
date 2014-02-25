@@ -12,11 +12,18 @@
 <script type="text/javascript" src="../jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript" src="Scripts/jQuery.Bootstrap.WebUI.js"></script>
 <script type="text/javascript">	
+	function GetData(page){
+		$("#DataArea").html("<div class=\"progress progress-striped active\"><div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"10\" aria-valuemin=\"0\" aria-valuemax=\"10\" style=\"width: 100%\"></div></div>");
+		$.post("Ajax/GetAlbumList.aspx",{page:page},function(data){
+			$("#DataArea").html(data);
+		});
+	}
+	
 	function ShowAddNewAlbum(){
 		SetFormToDefault("AddNew");	
 		$("#Dialog_AlbumInfo").dialog("open");
 	}
-	
+
 	function GetAlbumInfo(id){
 		SetFormToDefault("Update");
 		SwitchForm("Waitting");
@@ -111,7 +118,7 @@
 		$("#Text_AlbumName").val("");
 		$("#Text_AlbumOrderId").val("");
 		$("#Select_AlbumCoverId").empty();
-		$("#Select_AlbumCoverId").AddOption("默认封面",0);
+		$("#Select_AlbumCoverId").AddOption("默认封面",1);
 		$("#Select_AlbumCoverId").val(0);
 		$("#Select_AlbumStatus").val(1);
 		$("input[id^=btn_]").hide();	
@@ -153,10 +160,13 @@
 				}
 			}
 		});
+		
+		GetData(1);
     });
 </script>
 </head>
 <body>
+<!--navbar-inverse-->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
@@ -174,9 +184,8 @@
     </div>
 </nav>
 <div class="MainContainer" style="text-align:right;"><input name="" type="button" value="添加新相册" class="btn btn-primary" onClick="ShowAddNewAlbum();"></div>
-<div class="MainContainer">
-	<div class="AlbumBoard">
-    	<img src="../Images/gallery/gallery_3_1.jpg" width="278" height="182">
+<div class="MainContainer" id="DataArea">
+	<div class="AlbumBoard"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="278" height="182"></a>
         <div class="row AlbumTitle">
         	<div class="col-md-9">title</div>
             <div class="col-md-3"><input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);"></div>
@@ -211,7 +220,7 @@
     	<label for="Select_AlbumCoverId" class="col-md-3 control-label">相册封面：</label>
         <div class="col-md-9">
             <select id="Select_AlbumCoverId" class="form-control">
-            	<option value="0">默认封面</option>
+            	<option value="1">默认封面</option>
             </select>
         </div>
     </div>

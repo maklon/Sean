@@ -28,3 +28,9 @@ body {
 	margin-top:40px;
 	padding:0px 10px;
 }
+.PhotoBoard {
+	width:202px;
+	height:188px;
+	float:left;
+	margin:10px;
+}
