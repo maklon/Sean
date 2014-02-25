@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="Css/cms.css" rel="stylesheet" type="text/css">
+<link href="Css/uploadify.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../Scripts/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="Scripts/jquery.uploadify.min.js"></script>
+<script type="text/javascript">	
+	var AlbumId=0;
+	
+	$(document).ready(function() {
+		$("#Photo_Upload").uploadify({
+			'swf':'Images/uploadify.swf',
+			'uploader':'PhotoUploadFiles.aspx'
+		});
+
+    });
+</script>
+</head>
+
+<body>
+<div id="UploadFileArea">
+    <input type="file" name="Photo_Upload" id="Photo_Upload" />
+</div>
+</body>
+</html>

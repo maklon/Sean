@@ -21,7 +21,7 @@
         }
 
         SQL = "SELECT TOP " + (PageId * PageSize) + " Sean_AlbumList.*,Sean_PhotoList.ThumbnailName FROM Sean_AlbumList "
-            + "INNER JOIN Sean_PhotoList  ON Sean_AlbumList.AlubmCoverId=Sean_PhotoList.Id  ORDER BY Id DESC";
+            + "INNER JOIN Sean_PhotoList  ON Sean_AlbumList.AlbumCoverId=Sean_PhotoList.Id  ORDER BY Id DESC";
         MZ.CreateDataTable(SQL, "PL");
         Dt = MZ.Tables["PL"];
         StartId = (PageId - 1) * PageSize;
@@ -62,10 +62,10 @@
 <%} %>
 <div class="MainContainer" style="text-align:center;">
 	<ul class="pagination">
-    	<li><a href="javascript:void(0);" onclick="GetData(1);">&laquo;</a></li>
+    	<li<%if (PageId == 1) { Response.Write(" class=\"disabled\""); } %>><a href="javascript:void(0);" onclick="GetData(1);">&laquo;</a></li>
         <%for (int i=StartPageId;i<=EndPageId;i++){ %>
-        <li><a href="javascript:void(0);" onclick="GetData(<%=i %>);"<%if (i == PageId) { Response.Write(" class=\"active\""); } %>><%=i %></a></li>
+        <li<%if (i == PageId) { Response.Write(" class=\"active\""); } %>><a href="javascript:void(0);" onclick="GetData(<%=i %>);"><%=i %></a></li>
         <%} %>
-        <li><a href="javascript:void(0);" onclick="GetData(<%=TotalPageCount %>);">&raquo;</a></li>
+        <li<%if (PageId == TotalPageCount) { Response.Write(" class=\"disabled\""); } %>><a href="javascript:void(0);" onclick="GetData(<%=TotalPageCount %>);">&raquo;</a></li>
     </ul>
 </div>

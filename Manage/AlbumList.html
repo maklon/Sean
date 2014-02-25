@@ -56,7 +56,7 @@
 		SwitchForm("Waitting");
 		$("#ProgressValue").SetProgressValue(50);
 		$.post("Ajax/AlbumOperate.aspx",{action:"ADDNEW",id:0,albumname:$("#Text_AlbumName").val(),
-			covertid:$("#SelectAlbumCoverId").val(),status:$("#Select_AlbumStatus").val(),
+			coverid:$("#SelectAlbumCoverId").val(),status:$("#Select_AlbumStatus").val(),
 			orderid:$("#Text_AlbumOrderId").val()},function(data){
 			var jObject=$.parseJSON(data);
 			$("#ProgressValue").SetProgressValue(100);
@@ -76,14 +76,14 @@
 		SwitchForm("Waitting");
 		$("#ProgressValue").SetProgressValue(50);
 		$.post("Ajax/AlbumOperate.aspx",{action:"UPDATE",id:$("#id").val(),albumname:$("#Text_AlbumName").val(),
-			covertid:$("#SelectAlbumCoverId").val(),status:$("#Select_AlbumStatus").val(),
+			coverid:$("#Select_AlbumCoverId").val(),status:$("#Select_AlbumStatus").val(),
 			orderid:$("#Text_AlbumOrderId").val()},function(data){
 			var jObject=$.parseJSON(data);
 			$("#ProgressValue").SetProgressValue(100);
 			if (jObject.ResultCode==0){
 				$("#Dialog_Info").ShowDialog("相册更新成功。");
 			}else{
-				SwitchFrom("Form");
+				SwitchForm("Form");
 				$("#Dialog_Info").ShowDialog(jObject.ResultMessage);
 			}
 		});
@@ -119,7 +119,7 @@
 		$("#Text_AlbumOrderId").val("");
 		$("#Select_AlbumCoverId").empty();
 		$("#Select_AlbumCoverId").AddOption("默认封面",1);
-		$("#Select_AlbumCoverId").val(0);
+		$("#Select_AlbumCoverId").val(1);
 		$("#Select_AlbumStatus").val(1);
 		$("input[id^=btn_]").hide();	
 		$("#FormAlert").hide();	
@@ -183,7 +183,7 @@
       </ul>
     </div>
 </nav>
-<div class="MainContainer" style="text-align:right;"><input name="" type="button" value="添加新相册" class="btn btn-primary" onClick="ShowAddNewAlbum();"></div>
+<div class="MainContainer" style="text-align:right;"><input type="button" value="刷新" class="btn btn-success">&nbsp;<input name="" type="button" value="添加新相册" class="btn btn-primary" onClick="ShowAddNewAlbum();"></div>
 <div class="MainContainer" id="DataArea">
 	<div class="AlbumBoard"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="278" height="182"></a>
         <div class="row AlbumTitle">
@@ -241,7 +241,7 @@
     	<input id="btn_addnew" type="button" value="添加" class="btn btn-primary" onClick="AddnewAlbumInfo();">
         <input id="btn_update" type="button" value="编辑" class="btn btn-info" onClick="UpdateAlbumInfo();">
         <input id="btn_delete" type="button" value="删除" class="btn btn-danger">
-        <input name="id" type="hidden" value="0">
+        <input id="id" type="hidden" value="0">
     </div>
     </form>
     <div class="progress progress-striped active" id="WaittingArea" style="display:none;">
