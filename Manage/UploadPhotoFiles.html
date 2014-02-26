@@ -21,7 +21,7 @@
 <script type="text/javascript" src="Scripts/jQuery.Bootstrap.WebUI.js"></script>
 <script type="text/javascript" src="Scripts/jquery.uploadify.min.js"></script>
 <script type="text/javascript">	
-	var AlbumId=0;
+	var AlbumId=1;
 	
 	function GetData(page){
 		$("#DataArea").html("<div class=\"progress progress-striped active\"><div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"10\" aria-valuemin=\"0\" aria-valuemax=\"10\" style=\"width: 100%\"></div></div>");
@@ -47,6 +47,7 @@
 					$(this).dialog("close");
 					$("#Dialog_UploadWaitting_Text").html("正在上传照片，请稍候...");
 					$("#Dialog_UploadWaitting").dialog("open");
+					$("#UploadFiles_Browser").uploadify("settings","formData",{aid:AlbumId});
 					$("#UploadFiles_Browser").uploadify("upload","*");
 				}
 			}
@@ -67,8 +68,8 @@
 			"fileTypeExts":"*.jpg;*.png",
 			"auto":false,
 			"onUploadSuccess":function(file,data,response){
-				if (response.indexOf('|')==-1){
-					alert(response);
+				if (data.indexOf('|')==-1){
+					alert(data);
 					return;
 				}
 				var ValueList = new Array();
@@ -77,6 +78,9 @@
 				$("#widthlist").val($("#widthlist").val()+"|"+ValueList[1]);
 				$("#heightlist").val($("#heightlist").val()+"|"+ValueList[2]);
 				$("#sizelist").val($("#sizelist").val()+"|"+ValueList[3]);
+			},
+			"onUploadError":function(file,errorCode,errorMsg,errorString){
+				alert("Error");
 			},
 			"onDialogClose":function(){
 				$("#btn_upload").show();
