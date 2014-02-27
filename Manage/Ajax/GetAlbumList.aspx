@@ -20,13 +20,12 @@
             PageId=1;
         }
 
-        SQL = "SELECT TOP " + (PageId * PageSize) + " Sean_AlbumList.*,Sean_PhotoList.ThumbnailName FROM Sean_AlbumList "
-            + "INNER JOIN Sean_PhotoList  ON Sean_AlbumList.AlbumCoverId=Sean_PhotoList.Id  ORDER BY Id DESC";
+        SQL = "SELECT TOP " + (PageId * PageSize) + " * FROM Sean_AlbumList ORDER BY Id DESC";
         MZ.CreateDataTable(SQL, "PL");
         Dt = MZ.Tables["PL"];
         StartId = (PageId - 1) * PageSize;
         EndId = PageId * PageSize;
-        SQL = "SELECT COUNT(*) FROM Sean_PhotoList";
+        SQL = "SELECT COUNT(*) FROM Sean_AlbumList";
         Sr = MZ.GetReader(SQL);
         if (Sr.Read()) {
             TotalDataCount = Sr.GetInt32(0);
@@ -53,7 +52,7 @@
 </script>
 <%for (int i=StartId;i<EndId && i<Dt.Rows.Count;i++){ %>
 <div class="AlbumBoard">
-    <a href="PhotoList.aspx?id=<%=Dt.Rows[i][0] %>"><img src="../AlbumLib/<%=Dt.Rows[i][0]+"/"+Dt.Rows[i]["ThumbnailName"] %>" width="278" height="182"></a>
+    <a href="PhotoList.aspx?id=<%=Dt.Rows[i][0] %>"><img src="../AlbumLib/<%=Dt.Rows[i][0]+"/Thumbnail_"+Dt.Rows[i][2]+".jpg" %>" width="278" height="182"></a>
     <div class="row AlbumTitle">
         <div class="col-md-9"><%=Dt.Rows[i]["AlbumName"] %></div>
         <div class="col-md-3"><input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(<%=Dt.Rows[i][0]%>);"></div>

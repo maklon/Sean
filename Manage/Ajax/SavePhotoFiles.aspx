@@ -3,9 +3,10 @@
 <%@ Import Namespace="MaklonZjing.MSSQL" %>
 <%@ Page Language="C#" ContentType="text/html" ResponseEncoding="gb2312" %>
 <script runat="server">
-    DB MZ = new DB(ConfigurationManager.ConnectionStrings["Android_DBConn"].ConnectionString);
-    string FileStr, WidthStr, HeightStr, SizeStr, AlbumId;
+    DB MZ = new DB(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
+    string FileStr,NameStr, WidthStr, HeightStr, SizeStr, AlbumId;
     string[] FileList;
+    string[] NameList;
     string[] WidthList;
     string[] HeightList;
     string[] SizeList;
@@ -25,6 +26,11 @@
             Response.Write("未获取到成功上传的文件名信息。");
             Response.End();
         }
+        NameStr = Request.Form["namelist"];
+        if (string.IsNullOrEmpty(NameStr)) {
+            Response.Write("未获取到成功上传的文件名。");
+            Response.End();
+        }
         WidthStr = Request.Form["widthlist"];
         if (string.IsNullOrEmpty(WidthStr)) {
             Response.Write("未获取到成功上传的文件尺寸信息。");
@@ -41,11 +47,13 @@
             Response.End();
         }
         FileStr = FileStr.Substring(1);
+        NameStr = NameStr.Substring(1);
         WidthStr = WidthStr.Substring(1);
         HeightStr = HeightStr.Substring(1);
         SizeStr = SizeStr.Substring(1);
 
         FileList = FileStr.Split('|');
+        NameList = NameStr.Split('|');
         WidthList = WidthStr.Split('|');
         HeightList = HeightStr.Split('|');
         SizeList = SizeStr.Split('|');
@@ -54,7 +62,7 @@
             SB = new StringBuilder();
             for (int i = 0; i < FileList.Length; i++) {
                 SB.Append("INSERT INTO Sean_PhotoList (AlbumId,FileName,PhotoName,PhotoWidth,PhotoHeight,PhotoSize) VALUES("
-                    + AlbumId + ",'" + FileList[i] + "','" + FileList[i] + "'," + WidthList[i] + "," + HeightList[i] + "," + SizeList[i] + ");");
+                    + AlbumId + ",'" + FileList[i] + "','" + NameList[i] + "'," + WidthList[i] + "," + HeightList[i] + "," + SizeList[i] + ");");
             }
             SQL = SB.ToString();
             MZ.ExecuteSQL(SQL);
@@ -76,7 +84,7 @@
             }
             Sr.Close();
             MZ.ExecuteSQL(SB.ToString());
-            Response.Write(0);
+            Response.Write("0");
         } catch (Exception ex) {
             string ExMsg = ex.Message;
             DB.SQLFiltrate(ref ExMsg);

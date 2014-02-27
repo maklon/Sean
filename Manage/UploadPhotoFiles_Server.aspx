@@ -34,7 +34,6 @@
                 UploadName = DateTime.Now.ToString("MMddHHmmssffffff") + "." + FileExt;
                 UpFile.SaveAs(UploadDir + "\\" + UploadName);
                 System.Drawing.Image Img = System.Drawing.Image.FromFile(UploadDir + "\\" + UploadName);
-                Response.Write("1");
                 Response.Write(UploadName + "|" + Img.Width + "|" + Img.Height + "|" + FileSize.ToString());
                 Img.Dispose();
             } else {

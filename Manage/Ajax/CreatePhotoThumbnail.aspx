@@ -6,7 +6,7 @@
 <%@ Import Namespace="System.Drawing.Imaging" %>
 <%@ Page Language="C#" ContentType="text/html" ResponseEncoding="gb2312" %>
 <script runat="server">
-    DB MZ = new DB(ConfigurationManager.ConnectionStrings["Android_DBConn"].ConnectionString);
+    DB MZ = new DB(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
     string SQL;
     SqlDataReader Sr;
     StringBuilder SSQL;
@@ -15,26 +15,37 @@
 
     protected void Page_Load(object sender, EventArgs e) {
 
-        SQL = "SELECT Id,AlbumId,FileName,PhotoWidth,PhotoWidth FROM Sean_PhotoList WHERE Status=5";
+        SQL = "SELECT Id,AlbumId,FileName,PhotoWidth,PhotoHeight FROM Sean_PhotoList WHERE Status=5";
         Sr = MZ.GetReader(SQL);
         SSQL = new StringBuilder();
-        
+        ImageSize imageSize = new ImageSize(0, 0);
         while (Sr.Read()) {
-            PhotoWidth = (int)(Sr.GetInt32(3)*.6);
-            PhotoHeight = (int)(Sr.GetInt32(4)*.6);
-            FilePath = Server.MapPath("../../") + "AlbumLib\\" + Sr.GetInt32(1) + "\\";
-            try {
-                MakeThumbnail(FilePath + Sr.GetString(2), FilePath + "Thumbnail_" + Sr.GetString(2), PhotoWidth, PhotoHeight, "HW");
-                SSQL.Append("UPDATE Sean_PhotoList SET Status=10 WHERE Id=" + Sr.GetInt32(0) + ";");
-            } catch (Exception ex) {
-                Response.Write("Éú³ÉËõÂÔÍ¼Ê§°Ü¡£(" + ex.Message + ")");
-            }          
+            PhotoWidth = Sr.GetInt32(3);
+            PhotoHeight = Sr.GetInt32(4);
+            if (PhotoWidth > 278 || PhotoHeight > 182) {
+                imageSize = GetImageSize(PhotoWidth, PhotoHeight, 278, 182);
+                FilePath = Server.MapPath("../../") + "AlbumLib\\" + Sr.GetInt32(1) + "\\";
+                try {
+                    MakeThumbnail(FilePath + Sr.GetString(2), FilePath + "Thumbnail_" + Sr.GetString(2), imageSize.ImageWidth, imageSize.ImageHeight, "HW");
+                    SSQL.Append("UPDATE Sean_PhotoList SET Status=10 WHERE Id=" + Sr.GetInt32(0) + ";");
+                } catch (Exception ex) {
+                    Response.Write("Éú³ÉËõÂÔÍ¼Ê§°Ü¡£(" + ex.Message + ")");
+                }
+            } else {
+                try {
+                    System.IO.File.Copy(FilePath + Sr.GetInt32(0) + ".jpg", FilePath + "Thumbnail_" + Sr.GetInt32(0) + ".jpg");
+                    SSQL.Append("UPDATE Sean_PhotoList SET Status=10 WHERE Id=" + Sr.GetInt32(0) + ";");
+                } catch (Exception ex) {
+                    Response.Write("¸´ÖÆËõÂÔÍ¼Ê§°Ü¡£(" + ex.Message + ")");
+                }
+                
+            }     
         }
         Sr.Close();
         if (SSQL.Length > 0) {
             try {
                 MZ.ExecuteSQL(SSQL.ToString());
-                Response.Write(0);
+                Response.Write("0");
             } catch (Exception ex) {
                 Response.Write("Éú³ÉËõÂÔÍ¼Ê§°Ü:"+ex.Message);
             }
@@ -43,6 +54,38 @@
 
     protected void Page_UnLoad(object sender, EventArgs e) {
         MZ = null;
+    }
+
+    public class ImageSize {
+        public int ImageWidth;
+        public int ImageHeight;
+
+        public ImageSize(int ImgW, int ImgH) {
+            ImageWidth = ImgW;
+            ImageHeight = ImgH;
+        }
+    }
+
+    public static ImageSize GetImageSize(int width, int height, int limitwidth, int limitheight) {
+        ImageSize IS = new ImageSize(0, 0);
+        float WRate, HRate;
+        if (width > limitwidth || height > limitheight) {
+            WRate = (float)width / limitwidth;
+            HRate = (float)height / limitheight;
+            if (WRate > HRate) {
+                IS.ImageWidth = limitwidth;
+                IS.ImageHeight = limitwidth * height / width;
+                if (IS.ImageHeight > limitheight) IS.ImageHeight = limitheight;
+            } else {
+                IS.ImageHeight = limitheight;
+                IS.ImageWidth = limitheight * width / height;
+                if (IS.ImageWidth > limitwidth) IS.ImageWidth = limitwidth;
+            }
+        } else {
+            IS.ImageWidth = width;
+            IS.ImageHeight = height;
+        }
+        return IS;
     }
 
 
