@@ -52,7 +52,7 @@
 </script>
 <%for (int i=StartId;i<EndId && i<Dt.Rows.Count;i++){ %>
 <div class="AlbumBoard">
-    <a href="PhotoList.aspx?id=<%=Dt.Rows[i][0] %>"><img src="../AlbumLib/<%=Dt.Rows[i][0]+"/Thumbnail_"+Dt.Rows[i][2]+".jpg" %>" width="278" height="182"></a>
+    <a href="PhotoList.aspx?id=<%=Dt.Rows[i][0] %>"><img src="<%if ((int)Dt.Rows[i][2] == 0) { Response.Write("../AlbumLib/DefaultAlbumCover.png"); }else{ Response.Write("../AlbumLib/"+Dt.Rows[i][0]+"/Thumbnail_"+Dt.Rows[i][2]+".jpg");} %>" width="278" height="182"></a>
     <div class="row AlbumTitle">
         <div class="col-md-9"><%=Dt.Rows[i]["AlbumName"] %></div>
         <div class="col-md-3"><input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(<%=Dt.Rows[i][0]%>);"></div>

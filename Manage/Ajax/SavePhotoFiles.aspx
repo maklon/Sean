@@ -1,10 +1,12 @@
 ﻿<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="MaklonZjing.MSSQL" %>
+
 <%@ Page Language="C#" ContentType="text/html" ResponseEncoding="gb2312" %>
+
 <script runat="server">
     DB MZ = new DB(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
-    string FileStr,NameStr, WidthStr, HeightStr, SizeStr, AlbumId;
+    string FileStr, NameStr, WidthStr, HeightStr, SizeStr, AlbumId;
     string[] FileList;
     string[] NameList;
     string[] WidthList;
@@ -14,7 +16,7 @@
     string SQL;
     SqlDataReader Sr;
     string FilePath, FileExt;
-    
+
     protected void Page_Load(object sender, EventArgs e) {
         AlbumId = Request.Form["aid"];
         if (string.IsNullOrEmpty(AlbumId) || !General.IsMatch(AlbumId, "^\\d+$")) {
@@ -57,7 +59,7 @@
         WidthList = WidthStr.Split('|');
         HeightList = HeightStr.Split('|');
         SizeList = SizeStr.Split('|');
-        
+
         try {
             SB = new StringBuilder();
             for (int i = 0; i < FileList.Length; i++) {
@@ -73,19 +75,21 @@
             SB.Remove(0, SB.Length);
             while (Sr.Read()) {
                 FilePath = Server.MapPath("../../") + "AlbumLib\\" + Sr.GetInt32(1) + "\\";
-                FileExt = Sr.GetString(2).Substring(Sr.GetString(2).LastIndexOf("."));
+                FileExt = Sr.GetString(2).Substring(Sr.GetString(2).LastIndexOf(".") + 1);
                 try {
-                    System.IO.File.Move(FilePath + "\\" + Sr.GetString(2), FilePath + "\\" + Sr.GetInt32(0) + FileExt);
-                    SB.Append("UPDATE Sean_PhotoList SET FileName='" + Sr.GetInt32(0) + FileExt
-                        + "',Status=5 WHERE Id=" + Sr.GetInt32(0) + ";");
-                } catch {
+                    System.IO.File.Move(FilePath + "\\" + Sr.GetString(2), FilePath + "\\" + Sr.GetInt32(0) + "." + FileExt);
+                    SB.Append("UPDATE Sean_PhotoList SET FileName='" + Sr.GetInt32(0) + "." + FileExt
+                        + "',Status=5,PhotoType='" + FileExt + "' WHERE Id=" + Sr.GetInt32(0) + ";");
+                }
+                catch {
                     ;
                 }
             }
             Sr.Close();
             MZ.ExecuteSQL(SB.ToString());
             Response.Write("0");
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             string ExMsg = ex.Message;
             DB.SQLFiltrate(ref ExMsg);
             DB.SQLFiltrate(ref SQL);

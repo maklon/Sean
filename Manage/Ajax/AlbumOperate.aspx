@@ -73,10 +73,8 @@
             if (string.IsNullOrEmpty(OrderId) || !General.IsMatch(OrderId, "^\\d+$")) OrderId = "0";
             SQL = "";
             if (Action == "ADDNEW") {
-                SQL = "INSERT INTO Sean_AlbumList (AlbumName) VALUES('" + AlbumName + "')";
-                JsonResult = JsonConvert.SerializeObject(aInfo, Formatting.Indented);
-                Response.Write(JsonResult);
-                Response.End();
+                SQL = "INSERT INTO Sean_AlbumList (AlbumName,OrderId) VALUES('" + AlbumName + "'," + OrderId + ")";
+                
             } else if (Action == "UPDATE") {
                 SQL = "UPDATE Sean_AlbumList SET AlbumName='" + AlbumName + "',AlbumCoverId=" + AlbumCoverId
                     + ",Status=" + Status + ",OrderId=" + OrderId + " WHERE Id=" + Id;
@@ -92,7 +90,6 @@
                     aInfo.ResultMessage = ex.Message;
                 }
             }
-            
         } 
         JsonResult = JsonConvert.SerializeObject(aInfo, Formatting.Indented);
         Response.Write(JsonResult);

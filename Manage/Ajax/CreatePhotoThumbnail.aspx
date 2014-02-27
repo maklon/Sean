@@ -14,7 +14,6 @@
     string FilePath;
 
     protected void Page_Load(object sender, EventArgs e) {
-
         SQL = "SELECT Id,AlbumId,FileName,PhotoWidth,PhotoHeight FROM Sean_PhotoList WHERE Status=5";
         Sr = MZ.GetReader(SQL);
         SSQL = new StringBuilder();
