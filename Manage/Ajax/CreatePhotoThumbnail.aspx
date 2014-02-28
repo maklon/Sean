@@ -23,14 +23,14 @@
         while (Sr.Read()) {
             PhotoWidth = Sr.GetInt32(3);
             PhotoHeight = Sr.GetInt32(4);
+            FilePath = Server.MapPath("../../") + "AlbumLib\\" + Sr.GetInt32(1) + "\\";
             if (PhotoWidth > 278 || PhotoHeight > 182) {
                 imageSize = GetImageSize(PhotoWidth, PhotoHeight, 278, 182);
-                FilePath = Server.MapPath("../../") + "AlbumLib\\" + Sr.GetInt32(1) + "\\";
                 try {
                     MakeThumbnail(FilePath + Sr.GetString(2), FilePath + "Thumbnail_" + Sr.GetString(2), imageSize.ImageWidth, imageSize.ImageHeight, "HW");
                     SSQL.Append("UPDATE Sean_PhotoList SET Status=10 WHERE Id=" + Sr.GetInt32(0) + ";");
                 } catch (Exception ex) {
-                    Response.Write("…˙≥…Àı¬‘Õº ß∞‹°£(" + ex.Message + ")");
+                    Response.Write("…˙≥…Àı¬‘Õº ß∞‹°£(" + ex.Message + ",)"+FilePath);
                 }
             } else {
                 try {
