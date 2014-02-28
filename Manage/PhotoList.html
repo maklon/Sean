@@ -13,6 +13,7 @@
 <script type="text/javascript" src="Scripts/jQuery.Bootstrap.WebUI.js"></script>
 <script type="text/javascript">
 	var AlbumId=1;
+	var PhotoId=0;
 	
 	function GetData(page){
 		$("#DataArea").html("<div class=\"progress progress-striped active\"><div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"10\" aria-valuemin=\"0\" aria-valuemax=\"10\" style=\"width: 100%\"></div></div>");
@@ -22,9 +23,38 @@
 	}
 
 	function ShowPhotoInfo(id){
+		PhotoId=id;
 		$("#Text_PhotoName").val($("#Text_PhotoName_"+id).val());
 		$("#Text_PhotoResume").val($("#Text_PhotoResume_"+id).val());
+		$("#Select_PhotoStatus").val($("#Text_Status_"+id).val());
 		$("#Dialog_PhotoInfo").dialog("open");
+	}
+	
+	function UpdateInfo(){
+		$("#btn_update").addClass("disabled");
+		$.post("Ajax/PhotoOperate.aspx",{action:"UPDATE",id:PhotoId,name:$("#Text_PhotoName").val(),
+			resume:$("#Text_PhotoResume").val(),status:$("#Select_PhotoStatus").val()},function(data){
+			$("#btn_update").removeClass("disabled");
+			if (data=="0"){
+				$("#Dialog_PhotoInfo").dialog("close");
+				$("#Dialog_Info").ShowDialog("更新成功");
+			}else{
+				$("#Dialog_Info").ShowDialog(data);
+			}
+		});
+	}
+	
+	function DeletePhoto(){
+		$("#btn_delete").addClass("disabled");
+		$.post("Ajax/PhotoOperate.aspx",{action:"DELETE",id:PhotoId,},function(data){
+			$("#btn_delete").removeClass("disabled");
+			if (data=="0"){
+				$("#Dialog_PhotoInfo").dialog("close");
+				$("#Dialog_Info").ShowDialog("删除成功");
+			}else{
+				$("#Dialog_Info").ShowDialog(data);
+			}
+		});	
 	}
 	
 	$(document).ready(function() {
@@ -32,7 +62,7 @@
 			autoOpen:false,
 			Modal:true,
 			width:500,
-			height:320
+			height:350
 		});
 		
 		$("#Dialog_Info").dialog({
@@ -86,63 +116,6 @@
         <span class="sr-only">100% Complete</span>
       </div>
     </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-        	<input id="Text_PhotoResume_1" type="hidden" value=""><input id="Text_PhotoName_1" type="hidden" value="">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-    <div class="PhotoBoard thumbnail"> <a href="#"><img src="../Images/gallery/gallery_3_1.jpg" width="202" height="138"></a>
-        <div class="caption text-right">
-            <input type="button" value="编辑" class="btn btn-default" onClick="GetAlbumInfo(1);">
-        </div>
-    </div>
-</div>
-<div class="MainContainer" style="text-align:center;">
-    <ul class="pagination">
-        <li><a href="">&laquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
-    </ul>
 </div>
 <div id="Dialog_PhotoInfo" style="width:500px;" title="相册信息">
     <form  class="form-horizontal" role="form" id="AlbumFormArea">
@@ -155,6 +128,15 @@
         <div class="form-group">
             <label for="Text_PhotoResume" class="col-md-3 control-label">照片描述：</label>
             <div class="col-md-9"><textarea id="Text_PhotoResume" class="form-control" type="text" rows="5"></textarea></div>
+        </div>
+        <div class="form-group">
+            <label for="Text_PhotoStatus" class="col-md-3 control-label">照片状态：</label>
+            <div class="col-md-9"><select id="Select_PhotoStatus" class="form-control">
+              <option value="10">显示</option>
+              <option value="9">隐藏</option>
+              <option value="0">尚未完成文件名简化</option>
+              <option value="5">尚未生成缩略图</option>
+            </select></div>
         </div>
         <div class="form-group" style="text-align:center;">
             <input id="btn_update" type="button" value="更新" class="btn btn-info" onClick="UpdateAlbumInfo();">

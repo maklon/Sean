@@ -101,14 +101,14 @@
 
     public class AlbumInfo
     {
-        public int Id { get; set; }
-        public string AlbumName { get; set; }
-        public int AlbumPicId{ get; set; }
-        public int Status{ get; set; }
-        public int OrderId { get; set; }
-        public List<SimplePhoto> PhotoList { get; set; }
-        public int ResultCode { get; set; }
-        public string ResultMessage { get; set; }
+        public int Id;
+        public string AlbumName;
+        public int AlbumPicId;
+        public int Status;
+        public int OrderId;
+        public List<SimplePhoto> PhotoList;
+        public int ResultCode;
+        public string ResultMessage;
 
         public AlbumInfo() {
             PhotoList = new List<SimplePhoto>();
