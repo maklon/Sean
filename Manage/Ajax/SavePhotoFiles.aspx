@@ -79,7 +79,7 @@
                 try {
                     System.IO.File.Move(FilePath + "\\" + Sr.GetString(2), FilePath + "\\" + Sr.GetInt32(0) + "." + FileExt);
                     SB.Append("UPDATE Sean_PhotoList SET FileName='" + Sr.GetInt32(0) + "." + FileExt
-                        + "',Status=5,PhotoType='" + FileExt + "' WHERE Id=" + Sr.GetInt32(0) + ";");
+                        + "',PhotoType='" + FileExt + "',Status=5 WHERE Id=" + Sr.GetInt32(0) + ";");
                 }
                 catch {
                     ;

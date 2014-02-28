@@ -4,7 +4,9 @@
 <%@ Import Namespace="System.Text" %>
 <%@ Import Namespace="System.Drawing" %>
 <%@ Import Namespace="System.Drawing.Imaging" %>
+
 <%@ Page Language="C#" ContentType="text/html" ResponseEncoding="gb2312" %>
+
 <script runat="server">
     DB MZ = new DB(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
     string SQL;
@@ -14,7 +16,7 @@
     string FilePath;
 
     protected void Page_Load(object sender, EventArgs e) {
-        SQL = "SELECT Id,AlbumId,FileName,PhotoWidth,PhotoHeight FROM Sean_PhotoList WHERE Status=5";
+        SQL = "SELECT Id,AlbumId,FileName,PhotoWidth,PhotoHeight,PhotoType FROM Sean_PhotoList WHERE Status=5";
         Sr = MZ.GetReader(SQL);
         SSQL = new StringBuilder();
         ImageSize imageSize = new ImageSize(0, 0);
@@ -32,13 +34,13 @@
                 }
             } else {
                 try {
-                    System.IO.File.Copy(FilePath + Sr.GetInt32(0) + ".jpg", FilePath + "Thumbnail_" + Sr.GetInt32(0) + ".jpg");
+                    System.IO.File.Copy(FilePath + Sr.GetInt32(0) + "." + Sr.GetString(5), FilePath + "Thumbnail_" + Sr.GetInt32(0) + "." + Sr.GetString(5));
                     SSQL.Append("UPDATE Sean_PhotoList SET Status=10 WHERE Id=" + Sr.GetInt32(0) + ";");
                 } catch (Exception ex) {
                     Response.Write("¸´ÖÆËõÂÔÍ¼Ê§°Ü¡£(" + ex.Message + ")");
                 }
-                
-            }     
+
+            }
         }
         Sr.Close();
         if (SSQL.Length > 0) {
@@ -46,7 +48,7 @@
                 MZ.ExecuteSQL(SSQL.ToString());
                 Response.Write("0");
             } catch (Exception ex) {
-                Response.Write("Éú³ÉËõÂÔÍ¼Ê§°Ü:"+ex.Message);
+                Response.Write("Éú³ÉËõÂÔÍ¼Ê§°Ü:" + ex.Message);
             }
         }
     }

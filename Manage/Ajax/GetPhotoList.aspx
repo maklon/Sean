@@ -26,7 +26,7 @@
             AlbumId = 0;
         }
 
-        SQL = "SELECT TOP " + (PageId * PageSize) + " * FROM Sean_PhotoList WHERE AlbumId=" + AlbumId + " ORDER BY OrderId DESC,Id DESC";
+        SQL = "SELECT TOP " + (PageId * PageSize) + " * FROM Sean_PhotoList WHERE AlbumId=" + AlbumId + " ORDER BY Id DESC";
         MZ.CreateDataTable(SQL, "PL");
         Dt = MZ.Tables["PL"];
         StartId = (PageId - 1) * PageSize;
