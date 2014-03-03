@@ -3,11 +3,13 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 <%@ Import Namespace="System.Collections.Generic" %>
+
 <%@ Page Language="C#" %>
+
 <script runat="server">
     DB MZ = new DB(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
     SqlDataReader Sr;
-    string SQL, Id, AlbumName, AlbumCoverId, Status, OrderId, Action;
+    string SQL, Id, AlbumName, AlbumCoverId, Status, OrderId, Action, AlbumResume;
     string JsonResult;
 
     protected void Page_Load(object sender, EventArgs e) {
@@ -34,8 +36,9 @@
                 aInfo.Id = Sr.GetInt32(0);
                 aInfo.AlbumName = Sr.GetString(1);
                 aInfo.AlbumPicId = Sr.GetInt32(2);
-                aInfo.Status = Sr.GetInt32(3);
-                aInfo.OrderId = Sr.GetInt32(4);
+                aInfo.AlbumResume = Sr.GetString(3);
+                aInfo.Status = Sr.GetInt32(4);
+                aInfo.OrderId = Sr.GetInt32(5);
                 Sr.NextResult();
                 while (Sr.Read()) {
                     aInfo.PhotoList.Add(new SimplePhoto(Sr.GetInt32(0), Sr.GetString(1)));
@@ -55,9 +58,10 @@
                 aInfo.ResultCode = 1;
                 aInfo.ResultMessage = ex.Message;
             }
-        } else{
+        } else {
             AlbumName = Request.Form["albumname"];
             AlbumCoverId = Request.Form["coverid"];
+            AlbumResume = Request.Form["albumresume"];
             Status = Request.Form["status"];
             OrderId = Request.Form["orderid"];
             if (string.IsNullOrEmpty(AlbumName)) {
@@ -68,16 +72,18 @@
                 Response.End();
             }
             DB.SQLFiltrate(ref AlbumName);
+            DB.SQLFiltrate(ref AlbumResume);
             if (string.IsNullOrEmpty(AlbumCoverId) || !General.IsMatch(AlbumCoverId, "^\\d+$")) AlbumCoverId = "0";
             if (string.IsNullOrEmpty(Status) || !General.IsMatch(Status, "^[0-1]$")) Status = "0";
             if (string.IsNullOrEmpty(OrderId) || !General.IsMatch(OrderId, "^\\d+$")) OrderId = "0";
             SQL = "";
             if (Action == "ADDNEW") {
-                SQL = "INSERT INTO Sean_AlbumList (AlbumName,OrderId) VALUES('" + AlbumName + "'," + OrderId + ")";
-                
+                SQL = "INSERT INTO Sean_AlbumList (AlbumName,AlbumResume,OrderId) VALUES('"
+                    + AlbumName + "','" + AlbumResume + "'," + OrderId + ")";
+
             } else if (Action == "UPDATE") {
                 SQL = "UPDATE Sean_AlbumList SET AlbumName='" + AlbumName + "',AlbumCoverId=" + AlbumCoverId
-                    + ",Status=" + Status + ",OrderId=" + OrderId + " WHERE Id=" + Id;
+                    + ",AlbumResume='" + AlbumResume + "',Status=" + Status + ",OrderId=" + OrderId + " WHERE Id=" + Id;
             }
             if (SQL == string.Empty) {
                 aInfo.ResultCode = 1;
@@ -90,7 +96,7 @@
                     aInfo.ResultMessage = ex.Message;
                 }
             }
-        } 
+        }
         JsonResult = JsonConvert.SerializeObject(aInfo, Formatting.Indented);
         Response.Write(JsonResult);
     }
@@ -99,11 +105,11 @@
         MZ = null;
     }
 
-    public class AlbumInfo
-    {
+    public class AlbumInfo {
         public int Id;
         public string AlbumName;
         public int AlbumPicId;
+        public string AlbumResume;
         public int Status;
         public int OrderId;
         public List<SimplePhoto> PhotoList;
@@ -115,8 +121,7 @@
         }
     }
 
-    public class SimplePhoto
-    {
+    public class SimplePhoto {
         public int Id;
         public string FileName;
 
@@ -124,7 +129,7 @@
             this.Id = id;
             this.FileName = fileName;
         }
-        
+
     }
 
 </script>

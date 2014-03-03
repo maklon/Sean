@@ -12,8 +12,11 @@
     <link href="../Bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
     <link href="Css/cms.css" rel="stylesheet" type="text/css">
+    <link href="../jquery-ui/css/redmond/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../Scripts/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../Bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript" src="Scripts/jQuery.Bootstrap.WebUI.js"></script>
     <script type="text/javascript">
         function SwitchMenu(who) {
             //$("#MenuList li").removeClass("active");
@@ -37,7 +40,7 @@
                 <li><a href="Default_TurnRun.aspx">轮显图片管理</a></li>
             </ul>
         </li>
-        <li id="MenuAlbum"><a href="#">相册管理</a></li>
+        <li id="MenuAlbum"><a href="AlbumList.aspx">相册管理</a></li>
         <li id="MenuVideo"><a href="#">视频管理</a></li>
         <li id="MenuBlog"><a href="#">博客管理</a></li>
       </ul>

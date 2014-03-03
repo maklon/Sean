@@ -30,16 +30,17 @@
 		$("#Dialog_PhotoInfo").dialog("open");
 	}
 	
-	function UpdateInfo(){
+	function UpdatePhotoInfo(){
 		$("#btn_update").addClass("disabled");
 		$.post("Ajax/PhotoOperate.aspx",{action:"UPDATE",id:PhotoId,name:$("#Text_PhotoName").val(),
 			resume:$("#Text_PhotoResume").val(),status:$("#Select_PhotoStatus").val()},function(data){
 			$("#btn_update").removeClass("disabled");
-			if (data=="0"){
+			var jObject=$.parseJSON(data);
+			if (jObject.ResultCode==0){
 				$("#Dialog_PhotoInfo").dialog("close");
 				$("#Dialog_Info").ShowDialog("更新成功");
 			}else{
-				$("#Dialog_Info").ShowDialog(data);
+				$("#Dialog_Info").ShowDialog(jObject.ResultMessage);
 			}
 		});
 	}
@@ -81,7 +82,7 @@
 					$(this).dialog("close");
 				},
 				"确定删除":function(){
-					DeleteAlbum();
+					DeletePhoto();
 				}
 			}
 		});
@@ -139,8 +140,8 @@
             </select></div>
         </div>
         <div class="form-group" style="text-align:center;">
-            <input id="btn_update" type="button" value="更新" class="btn btn-info" onClick="UpdateAlbumInfo();">
-            <input id="btn_delete" type="button" value="删除" class="btn btn-danger">
+            <input id="btn_update" type="button" value="更新" class="btn btn-info" onClick="UpdatePhotoInfo();">
+            <input id="btn_delete" type="button" value="删除" class="btn btn-danger" onClick="$('#Dialog_DeleteConfirm').dialog('open');">
             <input name="id" type="hidden" value="0">
         </div>
     </form>

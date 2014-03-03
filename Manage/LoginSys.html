@@ -10,6 +10,7 @@
 <script type="text/javascript" src="../Scripts/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="../Bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="Scripts/jQuery.Bootstrap.WebUI.js"></script>
 <script type="text/javascript">
 	function Logining(){
 		if ($("#uname").val()=="" || $("#pwd").val()==""){
@@ -17,21 +18,17 @@
 			return;
 		}
 		SwitchOperate("Logining");
-		setProgress(30);
+		$("#ProgressValue").SetProgressValue(30);
 		$.post("Ajax/Logining.aspx",{uname:$("#uname").val(),pwd:$("#pwd").val()},function(data){
-			setProgress(80);
 			if (data=="0"){
-				setProgress(100);
+				$("#ProgressValue").SetProgressValue(100);
 				window.location="Default.aspx";
 			}else{
-				ShowDialog(data);
+				$("#ProgressValue").SetProgressValue(90);
+				$("#LoginDialog").ShowDialog(data);
 				SwitchOperate("Input");
 			}
 		});
-	}
-	
-	function setProgress(val){
-		$("#ProgressValue").css("width",val+"%");	
 	}
 	
 	function SwitchOperate(who){
@@ -42,11 +39,6 @@
 			$("#area_btn").show();
 			$("#area_waiting").hide();
 		}
-	}
-	
-	function ShowDialog(text){
-		$("#LoginDialog").text(text);
-		$("#LoginDialog").dialog("open");	
 	}
 	
 	$(document).ready(function() {

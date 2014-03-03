@@ -53,11 +53,12 @@
 
 </script>
 <%for (int i = StartId; i < EndId && i < Dt.Rows.Count; i++) { %>
-<div class="PhotoBoard thumbnail"> <a href="#"><img src="../AlbumLib/<%=AlbumId+"/Thumbnail_"+Dt.Rows[i]["FileName"] %>" width="202" height="138"></a>
-    <div class="caption text-right">
+<div class="PhotoBoard thumbnail"> <a href="#"><img src="../AlbumLib/<%=AlbumId+"/Thumbnail_"+Dt.Rows[i]["FileName"] %>"></a>
+    <div class="caption">
+        <label class="text-info"><%=Dt.Rows[i]["PhotoName"] %></label>
         <input id="Text_PhotoResume_<%=Dt.Rows[i][0]%>" type="hidden" value="<%=Dt.Rows[i]["PhotoResume"] %>"><input id="Text_PhotoName_<%=Dt.Rows[i][0]%>" type="hidden" value="<%=Dt.Rows[i]["PhotoName"] %>">
         <input id="Text_Status_<%=Dt.Rows[i][0]%>" type="hidden" value="<%=Dt.Rows[i]["Status"] %>">
-        <input type="button" value="编辑" class="btn btn-default" onClick="ShowPhotoInfo(<%=Dt.Rows[i][0]%>);">
+        <input type="button" value="编辑" class="btn btn-default" style="float:right;" onClick="ShowPhotoInfo(<%=Dt.Rows[i][0]%>);">
     </div>
 </div>
 <%} %>
