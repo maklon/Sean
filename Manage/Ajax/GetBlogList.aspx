@@ -8,9 +8,9 @@
     DS MZ = new DS(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
     SqlDataReader Sr;
     DataTable Dt;
-    string SQL, PhotoPath;
+    string SQL;
     int PageId, AlbumId, TotalDataCount, TotalPageCount, StartId, EndId, StartPageId, EndPageId;
-    int PageSize = 12;
+    int PageSize = 20;
     int PageSpan = 4;
 
     protected void Page_Load(object sender, EventArgs e) {
@@ -20,19 +20,13 @@
         else {
             PageId = 1;
         }
-        if (Request["aid"] != null) {
-            AlbumId = Convert.ToInt32(Request["aid"]);
-        }
-        else {
-            AlbumId = 0;
-        }
 
-        SQL = "SELECT TOP " + (PageId * PageSize) + " * FROM Sean_PhotoList WHERE AlbumId=" + AlbumId + " ORDER BY Id DESC";
-        MZ.CreateDataTable(SQL, "PL");
-        Dt = MZ.Tables["PL"];
+        SQL = "SELECT TOP " + (PageId * PageSize) + " Id,Title,Tags,Comment,AddTime FROM Sean_BlogList ORDER BY AddTime DESC";
+        MZ.CreateDataTable(SQL, "BL");
+        Dt = MZ.Tables["BL"];
         StartId = (PageId - 1) * PageSize;
         EndId = PageId * PageSize;
-        SQL = "SELECT COUNT(*) FROM Sean_PhotoList WHERE AlbumId=" + AlbumId;
+        SQL = "SELECT COUNT(*) FROM Sean_BlogList";
         Sr = MZ.GetReader(SQL);
         if (Sr.Read()) {
             TotalDataCount = Sr.GetInt32(0);
@@ -50,7 +44,6 @@
             StartPageId = 1;
             EndPageId = 1;
         }
-        PhotoPath = "../AlbumLib/" + AlbumId + "/";
     }
 
     protected void Page_Unload(object sender, EventArgs e) {
@@ -59,24 +52,36 @@
     }
 
 </script>
-<%for (int i = StartId; i < EndId && i < Dt.Rows.Count; i++) { %>
-<div class="PhotoBoard thumbnail">
-    <a href="#">
-        <img src="../AlbumLib/<%=AlbumId+"/Thumbnail_"+Dt.Rows[i]["FileName"] %>"></a>
-    <div class="caption">
-        <label class="text-info"><%=Dt.Rows[i]["PhotoName"] %></label>
-        <input id="Text_PhotoResume_<%=Dt.Rows[i][0]%>" type="hidden" value="<%=Dt.Rows[i]["PhotoResume"] %>"><input id="Text_PhotoName_<%=Dt.Rows[i][0]%>" type="hidden" value="<%=Dt.Rows[i]["PhotoName"] %>">
-        <input id="Text_Status_<%=Dt.Rows[i][0]%>" type="hidden" value="<%=Dt.Rows[i]["Status"] %>">
-        <input type="button" value="编辑" class="btn btn-default" style="float: right;" onclick="ShowPhotoInfo(<%=Dt.Rows[i][0]%>);">
-    </div>
-</div>
-<%} %>
-<div class="MainContainer" style="text-align:center;">
-	<ul class="pagination">
+<table class="table table-hover table-striped">
+    <thead style="font-weight:bold; font-size:16px;">
+      <tr>
+        <td style="width:10%;">#</td>
+        <td style="width:30%;">标题</td>
+        <td style="width:20%;">标签</td>
+        <td style="width:20%;">发布时间</td>
+        <td style="width:10%;">评价</td>
+        <td style="width:10%;">操作</td>
+      </tr>
+    </thead>
+    <tbody>
+        <%for (int i = StartId; i < EndId && i < Dt.Rows.Count; i++) { %>
+        <tr>
+            <td><%=Dt.Rows[i][0] %></td>
+            <td><%=Dt.Rows[i]["Title"] %></td>
+            <td><%=Dt.Rows[i]["Tags"] %></td>
+            <td><%=((DateTime)(Dt.Rows[i]["AddTime"])).ToString("yyyy年MM月dd日") %></td>
+            <td><%=Dt.Rows[i]["Comments"] %></td>
+            <td><a href="BlogEdit.aspx?id=<%=Dt.Rows[i][0] %>" class="text-primary">编辑</a></td>
+        </tr>
+        <%} %>
+    </tbody>
+  </table>
+  <div class="text-right">
+  	<ul class="pagination">
     	<li<%if (PageId == 1) { Response.Write(" class=\"disabled\""); } %>><a href="javascript:void(0);" onclick="GetData(1);">&laquo;</a></li>
         <%for (int i=StartPageId;i<=EndPageId;i++){ %>
         <li<%if (i == PageId) { Response.Write(" class=\"active\""); } %>><a href="javascript:void(0);" onclick="GetData(<%=i %>);"><%=i %></a></li>
         <%} %>
         <li<%if (PageId == TotalPageCount) { Response.Write(" class=\"disabled\""); } %>><a href="javascript:void(0);" onclick="GetData(<%=TotalPageCount %>);">&raquo;</a></li>
     </ul>
-</div>
+  </div>
