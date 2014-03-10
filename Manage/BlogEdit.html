@@ -24,9 +24,13 @@
         CKEDITOR.replace("Text_Content",{
 		customConfig:"config_blog.js",
 		height:300,
-		filebrowserUploadUrl:"../CKEditor_Upload_Image.aspx"
+		filebrowserUploadUrl:"./CKEditor_Upload_Image.aspx"
 		});
     });
+	
+	function AddnewBlog(){
+			
+	}
 </script>
 </head>
 <body>
@@ -49,9 +53,9 @@
 </nav>
 <div class="MainContainer caption text-right" style="padding-right:30px;"> <a href="javascript:void(0);" onClick="window.history.back();" class="btn btn-primary">返回</a> </div>
 <div class="container" style="width:800px;">
-    <div class="form-group">
+    <div class="form-group" id="Gp_Title">
     	<label for="Text_Title">博客标题</label>
-        <input id="Text_Title" type="text" class="form-control">
+        <input id="Text_Title" type="text" class="form-control" onBlur="$(this).CheckIsEmpty('Gp_Title');">
     </div>
     <div class="row">
     	<div class="col-md-6">
