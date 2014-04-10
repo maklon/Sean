@@ -1,0 +1,26 @@
+html,body {
+	height:100%;
+	width:100%;
+	margin:0px;
+}
+body {
+	font-family:"微软雅黑", "宋体", Verdana;
+	font-size:14px;
+	line-height:150%;
+	color:#f18101;
+	background-color:#fff;
+}
+a {
+	text-decoration: none;
+}
+div,form,td,p,ul,li,dl,dt,dd {
+	margin:0px;
+	padding:0px;
+}
+div {
+	word-break:break-all;
+	word-wrap:break-word;
+}
+img {
+	border-style:none;
+}

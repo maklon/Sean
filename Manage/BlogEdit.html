@@ -20,16 +20,123 @@
 <script type="text/javascript" src="Scripts/jQuery.Bootstrap.WebUI.js"></script>
 <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
+	var blogContent;
+	var Id=1;
+	var jObject;
+	
 	$(document).ready(function() {
         CKEDITOR.replace("Text_Content",{
 		customConfig:"config_blog.js",
-		height:300,
-		filebrowserUploadUrl:"./CKEditor_Upload_Image.aspx"
+		height:300
+		});
+		
+		$("#Dialog_Info").dialog({
+			autoOpen:false,
+			buttons:{
+				"确定":function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+		
+		$("#Dialog_Confirm_Add").dialog({
+			autoOpen:false,
+			Buttons:{
+				"取消":function(){
+					$(this).dialog("close");
+				},
+				"确定添加":function(){
+					AddnewBlog();
+				}
+			}
+		});
+		
+		$("#Dialog_Confirm_Del").dialog({
+			autoOpen:false,
+			Buttons:{
+				"取消":function(){
+					$(this).dialog("close");
+				},
+				"确定删除":function(){
+					DeleteBlog();
+				}
+			}
+		});
+		
+		$("#Dialog_OperateWaitting").dialog({
+			autoOpen:false,
+			modal:true,
+			width:400,
+			closeText:"hide"
+		});
+		
+		$("#Text_Date").datepicker({
+			dateFormat:"yy-mm-dd"	
 		});
     });
 	
 	function AddnewBlog(){
-			
+		if ($("#Text_Title").val()==""){
+			$("#Dialog_Info").ShowDialog("博客的标题没有填写。");
+			return;
+		}
+		blogContent=CKEDITOR.instances.Text_Content.getData();
+		if (blogContent==""){
+			$("#Dialog_Info").ShowDialog("博客内容为空。");
+			return;	
+		}
+		if(confirm("你确定要添加这条博客内容吗？")==false) return;
+		$("#Dialog_OperateWaitting").dialog("open");
+		$.post("Ajax/BlogOperate.aspx",{action:"ADDNEW",id:0,title:$("#Text_Title").val(),tags:$("#Text_Tags").val(),
+			date:$("#Text_Date").val(),content:blogContent},function(data){
+			$("#Dialog_OperateWaitting").dialog("close");
+			jObject=$.parseJSON(data);
+			if (jObject.ResultCode==0){
+				$("#Dialog_Info").ShowDialog("博客内容添加成功。");
+			}else{
+				$("#Dialog_Info").ShowDialog(jObject.ResultMessage);	
+			}
+		});
+	}
+	
+	function UpdateBlog(){
+		if ($("#Text_Title").val()==""){
+			$("#Dialog_Info").ShowDialog("博客的标题没有填写。");
+			return;
+		}
+		blogContent=CKEDITOR.instances.Text_Content.getData();
+		if (blogContent==""){
+			$("#Dialog_Info").ShowDialog("博客内容为空。");
+			return;	
+		}
+		if(confirm("你确定要更新这条博客内容吗？")==false) return;
+		$("#Dialog_OperateWaitting").dialog("open");
+		$.post("Ajax/BlogOperate.aspx",{action:"UPDATE",id:Id,title:$("#Text_Title").val(),tags:$("#Text_Tags").val(),
+			date:$("#Text_Date").val(),content:blogContent},function(data){
+			$("#Dialog_OperateWaitting").dialog("close");
+			jObject=$.parseJSON(data);
+			if (jObject.ResultCode==0){
+				$("#Dialog_Info").ShowDialog("博客内容更新成功。");
+			}else{
+				$("#Dialog_Info").ShowDialog(jObject.ResultMessage);	
+			}
+		});
+	}
+	
+	function DeleteBlog(){
+		if (confirm("你确定要删除这条博客吗？")==false) return;
+		$("#btn_update").addClass("disabled");
+		$("#btn_delete").addClass("disibled");	
+		$.post("Ajax/BlogOperate.aspx",{action:"DELETE",id:Id},function(data){
+			jObject=$.parseJSON(data);
+			if (jObject.ResultCode==0){
+				$("#Dialog_Info").ShowDialog("博客内容删除成功。");
+			}else{
+				$("#Dialog_Info").ShowDialog(jObject.ResultMessage);
+				$("#btn_update").removeClass("disabled");
+				$("#btn_delete").removeClass("disibled");	
+			}
+		});
 	}
 </script>
 </head>
@@ -67,7 +174,7 @@
         <div class="col-md-6">
         	<div class="form-group">
             	<label for="Text_Date">发布日期</label>
-                <input id="Text_Date" type="text" class="form-control">
+                <input id="Text_Date" type="text" class="form-control" value="">
             </div>
         </div>
     </div>
@@ -76,12 +183,19 @@
         <textarea id="Text_Content" rows="5" class="form-control"></textarea>
     </div>
     <div class="form-group text-center">
-    	<input id="btn_addnew" type="button" value="添加" class="btn btn-primary">
-        <input id="btn_update" type="button" value="更新" class="btn btn-success">
-        <input id="btn_delete" type="button" value="删除" class="btn btn-danger">
+    	<input id="btn_addnew" type="button" value="添加" class="btn btn-primary" onClick="AddnewBlog();">
+        <input id="btn_update" type="button" value="更新" class="btn btn-success" onClick="UpdateBlog();">
+        <input id="btn_delete" type="button" value="删除" class="btn btn-danger" onClick="DeleteBlog();">
     </div>
 </div>
 <div id="Dialog_Info" title="信息"></div>
-<div id="Dialog_Confirm" title="操作确认"></div>
+<div id="Dialog_Confirm_Del" title="删除确认">你确定要删除这条内容吗？</div>
+<div id="Dialog_Confirm_Add" title="添加确认"></div>
+<div id="Dialog_OperateWaitting" title="数据传递中...">
+	<div class="caption text-center" id="Dialog_UploadWaitting_Text">正在传递数据</div>
+	<div class="progress progress-striped active">
+      <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
+</div>
 </body>
 </html>

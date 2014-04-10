@@ -1,0 +1,69 @@
+@charset "utf-8";
+@import url("init.css");
+.FullContainer {
+	clear:both;	
+}
+.WebContainer {
+	width:1000px;
+	height:auto;
+	overflow:hidden;
+	margin:0px auto;
+}
+.PageTopPanel {
+	background-color:#3d7bb3;
+	height:10px;
+}
+#PageHeader {
+	width:960px;
+	clear:both;
+	margin:0px auto;
+	padding:10px;
+	padding-top:30px;
+	height:60px;
+}
+#PageHeader>#Logo{
+	float:left;
+	width:250px;
+	height:60px;
+}
+#PageHeader>#MainNav {
+	float:right;
+	width:550;
+	height:30px;
+	margin-top:10px;
+	/*一个菜单链接占用110px,本宽度取决于有几个菜单链接*/
+}
+#PageHeader>#MainNav>#MainNavList li {
+	display:block;
+	float:left;
+	width:100px;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	list-style:none;
+	margin-left:10px;
+	border-radius:10px;
+	background: -moz-linear-gradient(top,  #97c2e1 0%, #89aec8 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#97c2e1), color-stop(100%,#89aec8)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #97c2e1 0%,#89aec8 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #97c2e1 0%,#89aec8 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #97c2e1 0%,#89aec8 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #97c2e1 0%,#89aec8 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#97c2e1', endColorstr='#89aec8',GradientType=0 ); /* IE6-9 */
+	border-top: 1px solid #aacde7;
+	border-bottom: 1px solid #3d7bb3;
+}
+#PageHeader>#MainNav>#MainNavList li.CurrentItem{
+	background: -moz-linear-gradient(top,  #3d7bb3 0%, #3d71a1 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3d7bb3), color-stop(100%,#3d71a1)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #3d7bb3 0%,#3d71a1 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #3d7bb3 0%,#3d71a1 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #3d7bb3 0%,#3d71a1 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #3d7bb3 0%,#3d71a1 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d7bb3', endColorstr='#3d71a1',GradientType=0 ); /* IE6-9 */
+}
+#PageHeader>#MainNav>#MainNavList a{
+	color:#fff;
+	font-size:14px;
+	font-weight:bold;
+}

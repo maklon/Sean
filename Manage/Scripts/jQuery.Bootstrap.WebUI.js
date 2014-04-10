@@ -15,7 +15,7 @@
 		$(this).css("width",val+"%");	
 	};
 	$.fn.ShowDialog=function(text){
-		$(this).text(text);
+		$(this).html(text);
 		$(this).dialog("open");	
 	}
 	$.fn.AddOption=function(name,val){

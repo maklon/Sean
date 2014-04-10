@@ -15,6 +15,7 @@
     <script type="text/javascript">
         var AlbumId = <%=AlbumId%>;
         var PhotoId = 0;
+		var jObject;
 
         function GetData(page) {
             $("#DataArea").html("<div class=\"progress progress-striped active\"><div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"10\" aria-valuemin=\"0\" aria-valuemax=\"10\" style=\"width: 100%\"></div></div>");
@@ -38,7 +39,7 @@
                 resume: $("#Text_PhotoResume").val(), status: $("#Select_PhotoStatus").val()
             }, function (data) {
                 $("#btn_update").removeClass("disabled");
-                var jObject = $.parseJSON(data);
+                jObject = $.parseJSON(data);
                 if (jObject.ResultCode == 0) {
                     $("#Dialog_PhotoInfo").dialog("close");
                     $("#Dialog_Info").ShowDialog("更新成功");
@@ -52,7 +53,7 @@
             $("#btn_delete").addClass("disabled");
             $.post("Ajax/PhotoOperate.aspx", { action: "DELETE", id: PhotoId, }, function (data) {
                 $("#btn_delete").removeClass("disabled");
-                var jObject=$.parseJSON(data);
+                jObject=$.parseJSON(data);
                 if (jObject.ResultCode==0) {
                     $("#Dialog_PhotoInfo").dialog("close");
                     $("#Dialog_Info").ShowDialog("删除成功");
@@ -66,7 +67,7 @@
             $("#btn_setcover").addClass("disabled");
             $.post("Ajax/PhotoOperate.aspx",{action:"COVER",aid:AlbumId,id:PhotoId},function(data){
                 $("#btn_setcover").removeClass("disabled");
-                var jObject=$.parseJSON(data);
+                jObject=$.parseJSON(data);
                 if (jObject.ResultCode==0){
                     $("#Dialog_Info").ShowDialog("相册封面设置成功。");
                 }else{

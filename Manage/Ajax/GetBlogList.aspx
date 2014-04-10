@@ -21,7 +21,7 @@
             PageId = 1;
         }
 
-        SQL = "SELECT TOP " + (PageId * PageSize) + " Id,Title,Tags,Comment,AddTime FROM Sean_BlogList ORDER BY AddTime DESC";
+        SQL = "SELECT TOP " + (PageId * PageSize) + " Id,Title,Tags,Comments,AddTime FROM Sean_BlogList ORDER BY AddTime DESC";
         MZ.CreateDataTable(SQL, "BL");
         Dt = MZ.Tables["BL"];
         StartId = (PageId - 1) * PageSize;

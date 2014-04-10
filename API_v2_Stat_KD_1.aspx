@@ -5,7 +5,7 @@
 <script runat="server">
     DB MZ = new DB(ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString);
     string SQL, IMEI, IMSI, PhoneNumber, Version, GameData;
-    string Action, GameStatus, Money, Wave, Life,PayMoneyCount, PayFireStormCount;
+    string Action, GameStatus, Money, Wave, Life, PayMoneyCount, PayFireStormCount;
     string[] GameDataArr;
     
     protected void Page_Load(object Sender, EventArgs e) {
@@ -20,16 +20,7 @@
         DB.SQLFiltrate(ref Version);
         DB.SQLFiltrate(ref GameData);
         GameDataArr = GameData.Split('|');
-        if (GameDataArr.Length == 5) {
-            Action = GameDataArr[0];
-            GameStatus = GameDataArr[1];
-            Money = GameDataArr[2];
-            Wave = GameDataArr[3];
-            Life = GameDataArr[4];
-            PayMoneyCount = "0";
-            PayFireStormCount = "0";
-            Version = "1.2.0";//针对v2版API调用v1版API的手工
-        }else if (GameDataArr.Length==7){
+        if (GameDataArr.Length == 7) {
             Action = GameDataArr[0];
             GameStatus = GameDataArr[1];
             Money = GameDataArr[2];

@@ -160,8 +160,7 @@
                     <div id="UploadFiles_Browser"></div>
                 </div>
                 <div class="caption text-center">
-                    <input id="btn_upload" type="button" value="开始上传" class="btn btn-primary" onclick="$('#Dialog_Confirm').dialog('open');" style="display: none;">
-                    <input id="btn_cancelupload" type="button" value="取消上传列队" class="btn btn-danger" onclick="CancelUploadQueue();" style="display: none;">
+                    <input id="btn_upload" type="button" value="开始上传" class="btn btn-primary" onclick="$('#Dialog_Confirm').dialog('open');" style="display: none;">&nbsp;<input id="btn_cancelupload" type="button" value="取消上传列队" class="btn btn-danger" onclick="CancelUploadQueue();" style="display: none;">
                 </div>
             </div>
         </div>

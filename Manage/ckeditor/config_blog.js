@@ -26,4 +26,5 @@
 
 	// Se the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
+	config.filebrowserUploadUrl='./CKEditor_Upload_Image.aspx';
 };

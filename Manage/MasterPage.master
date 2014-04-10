@@ -42,7 +42,7 @@
         </li>
         <li id="MenuAlbum"><a href="AlbumList.aspx">相册管理</a></li>
         <li id="MenuVideo"><a href="#">视频管理</a></li>
-        <li id="MenuBlog"><a href="#">博客管理</a></li>
+        <li id="MenuBlog"><a href="BlogList.aspx">博客管理</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" style="margin-right:10px;">
         <li><a href="Logout.aspx"><%=Session["ManagerName"] %>&nbsp;退出</a></li>
